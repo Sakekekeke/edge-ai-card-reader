@@ -1,0 +1,20 @@
+# データセット（Roboflowからダウンロード可能なため）
+train/
+valid/
+test/
+data.yaml
+README.dataset.txt
+README.roboflow.txt
+*.zip
+
+# 出力画像
+aug_preview/
+
+# モデルの重み
+*.pt
+*.onnx
+runs/
+
+# APIキー・環境
+.env
+__pycache__/
