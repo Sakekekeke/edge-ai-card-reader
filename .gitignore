@@ -1,11 +1,5 @@
 # データセット（Roboflowからダウンロード可能なため）
-train/
-valid/
-test/
-data.yaml
-README.dataset.txt
-README.roboflow.txt
-*.zip
+dataset/
 
 # 出力画像
 aug_preview/
