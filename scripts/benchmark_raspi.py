@@ -5,7 +5,8 @@ PyTorch / ONNX / NCNN形式でFPSを比較する
 実行環境: Raspberry Pi 5 (8GB)
 実行方法:
     cd ~/edge-ai-card-reader
-    python benchmark_raspi.py
+    source venv/bin/activate
+    python scripts/benchmark_raspi.py
 """
 from ultralytics import YOLO
 from picamera2 import Picamera2
