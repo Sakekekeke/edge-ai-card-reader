@@ -4,7 +4,7 @@
 
 実行環境: Raspberry Pi 5 (8GB)
 前提:
-    pip install flask --break-system-packages
+    pip install flask
 
 実行方法:
     cd ~/edge-ai-card-reader
@@ -30,6 +30,7 @@ from ultralytics import YOLO
 # 設定
 # ============================================================
 MODEL_PATH = "models/exp_001_best_ncnn_model"
+IMGSZ = 416                # NCNNモデルのエクスポート時サイズに合わせる（640不可）
 CAMERA_SIZE = (640, 480)
 JPEG_QUALITY = 80          # JPEG圧縮品質 (1-100)
 SERVER_PORT = 8080
@@ -130,7 +131,7 @@ def detection_loop(model, picam2):
         frame_bgr = cv2.cvtColor(frame, cv2.COLOR_RGBA2BGR)
 
         # 推論
-        results = model(frame_bgr, verbose=False, imgsz=640)
+        results = model(frame_bgr, verbose=False, imgsz=IMGSZ)
 
         # BBox描画
         for r in results:
@@ -224,7 +225,7 @@ def main():
     for _ in range(10):
         frame = picam2.capture_array()
         frame_bgr = cv2.cvtColor(frame, cv2.COLOR_RGBA2BGR)
-        model(frame_bgr, verbose=False, imgsz=640)
+        model(frame_bgr, verbose=False, imgsz=IMGSZ)
     print("[INFO] ウォームアップ完了")
 
     # 検出ループを別スレッドで起動
