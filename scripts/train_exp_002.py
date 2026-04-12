@@ -12,7 +12,12 @@
 実行方法:
     cd D:/edge-ai-card-reader
     python scripts/train_exp_002.py
+    （VSCodeからの直接実行も可）
 """
+
+import sys
+from pathlib import Path
+sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 from ultralytics import YOLO
 from train_config import AUGMENTATION, DATA_YAML, TRAIN_PARAMS, download_dataset
@@ -26,14 +31,14 @@ def main():
 
     model.train(
         data=DATA_YAML,
-        project="runs",
+        project="runs/detect",
         name="exp_002_yolo26n",
         **TRAIN_PARAMS,
         **AUGMENTATION,
     )
 
     print("\nテストセットで評価中...")
-    best_model = YOLO("runs/detect/runs/exp_002_yolo26n/weights/best.pt")
+    best_model = YOLO("runs/detect/exp_002_yolo26n/weights/best.pt")
     metrics = best_model.val(data=DATA_YAML, split="test")
 
     print(f"\n{'='*40}")
