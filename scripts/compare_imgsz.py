@@ -1,6 +1,14 @@
 """
 imgsz 416 vs 640 比較スクリプト
 同じフレームで FPS と検出精度を比較する
+
+実行環境: Raspberry Pi 5 (8GB)
+前提:
+    models/exp_001_416_ncnn_model/ と models/exp_001_640_ncnn_model/ が必要
+実行方法:
+    cd ~/edge-ai-card-reader
+    source venv/bin/activate
+    python scripts/compare_imgsz.py
 """
 from ultralytics import YOLO
 from picamera2 import Picamera2
