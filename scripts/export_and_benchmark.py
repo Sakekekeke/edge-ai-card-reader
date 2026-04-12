@@ -1,6 +1,18 @@
 """
 モデルのフォーマット変換 + FPS計測
 PyTorch → ONNX → NCNN の順に変換し、各形式でFPSを比較する
+
+実行環境: Raspberry Pi 5 (8GB)
+実行方法:
+    cd ~/edge-ai-card-reader
+    source venv/bin/activate
+    python scripts/export_and_benchmark.py
+
+注意:
+    このスクリプトはimgsz=640でエクスポートします。
+    採用モデル (exp_001_best_ncnn_model) はimgsz=416でエクスポート済みのため、
+    再実行すると640版で上書きされます。
+    416版が必要な場合はIMGSZ_EXPORTを416に変更してから実行してください。
 """
 from ultralytics import YOLO
 from picamera2 import Picamera2
@@ -10,6 +22,7 @@ import numpy as np
 
 NUM_FRAMES = 50
 WARMUP_FRAMES = 10
+IMGSZ_EXPORT = 640  # エクスポート時のimgsz（採用モデルは416。変更時は注意）
 
 # カメラ初期化
 print("カメラ起動中...")
@@ -56,13 +69,13 @@ results["YOLO11n PyTorch"] = measure_fps(model_pt, "PyTorch")
 
 # ONNX変換
 print("[2/3] ONNX形式にエクスポート中...")
-onnx_path = model_pt.export(format="onnx", imgsz=640)
+onnx_path = model_pt.export(format="onnx", imgsz=IMGSZ_EXPORT)
 model_onnx = YOLO(onnx_path)
 results["YOLO11n ONNX"] = measure_fps(model_onnx, "ONNX")
 
 # NCNN変換
-print("[3/3] NCNN形式にエクスポート中...")
-ncnn_path = model_pt.export(format="ncnn", imgsz=640)
+print(f"[3/3] NCNN形式にエクスポート中 (imgsz={IMGSZ_EXPORT})...")
+ncnn_path = model_pt.export(format="ncnn", imgsz=IMGSZ_EXPORT)
 model_ncnn = YOLO(ncnn_path)
 results["YOLO11n NCNN"] = measure_fps(model_ncnn, "NCNN")
 
@@ -78,13 +91,13 @@ results["YOLO26n PyTorch"] = measure_fps(model_pt2, "PyTorch")
 
 # ONNX変換
 print("[2/3] ONNX形式にエクスポート中...")
-onnx_path2 = model_pt2.export(format="onnx", imgsz=640)
+onnx_path2 = model_pt2.export(format="onnx", imgsz=IMGSZ_EXPORT)
 model_onnx2 = YOLO(onnx_path2)
 results["YOLO26n ONNX"] = measure_fps(model_onnx2, "ONNX")
 
 # NCNN変換
-print("[3/3] NCNN形式にエクスポート中...")
-ncnn_path2 = model_pt2.export(format="ncnn", imgsz=640)
+print(f"[3/3] NCNN形式にエクスポート中 (imgsz={IMGSZ_EXPORT})...")
+ncnn_path2 = model_pt2.export(format="ncnn", imgsz=IMGSZ_EXPORT)
 model_ncnn2 = YOLO(ncnn_path2)
 results["YOLO26n NCNN"] = measure_fps(model_ncnn2, "NCNN")
 
