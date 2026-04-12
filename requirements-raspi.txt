@@ -1,0 +1,13 @@
+# Edge AI Card Reader - ラズパイ側（Raspberry Pi 5, 推論・配信用）
+# インストール: pip install -r requirements-raspi.txt
+# picamera2はシステムパッケージとして別途インストール済み（apt経由）
+# PyTorchはARM版を別途インストール:
+#   pip install torch torchvision
+
+ultralytics>=8.4.33
+opencv-python>=4.10.0
+numpy>=2.2.0
+flask>=3.1.0
+PyYAML>=6.0.0
+pillow>=11.0.0
+scipy>=1.17.0
